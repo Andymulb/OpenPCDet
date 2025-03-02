@@ -12,7 +12,7 @@ box_colormap = [
     [1, 1, 1],
     [0, 1, 0],
     [0, 1, 1],
-    [1, 1, 0],
+    [1, 1, 0]
 ]
 
 
@@ -35,7 +35,7 @@ def get_coor_colors(obj_labels):
     return label_rgba
 
 
-def draw_scenes(points, gt_boxes=None, ref_boxes=None, ref_labels=None, ref_scores=None, point_colors=None, draw_origin=True):
+def draw_scenes(vis, points, gt_boxes=None, ref_boxes=None, ref_labels=None, ref_scores=None, point_colors=None, draw_origin=True):
     if isinstance(points, torch.Tensor):
         points = points.cpu().numpy()
     if isinstance(gt_boxes, torch.Tensor):
@@ -43,8 +43,8 @@ def draw_scenes(points, gt_boxes=None, ref_boxes=None, ref_labels=None, ref_scor
     if isinstance(ref_boxes, torch.Tensor):
         ref_boxes = ref_boxes.cpu().numpy()
 
-    vis = open3d.visualization.Visualizer()
-    vis.create_window()
+    # Clear previously added geometry
+    vis.clear_geometries()
 
     vis.get_render_option().point_size = 1.0
     vis.get_render_option().background_color = np.zeros(3)
@@ -69,8 +69,12 @@ def draw_scenes(points, gt_boxes=None, ref_boxes=None, ref_labels=None, ref_scor
     if ref_boxes is not None:
         vis = draw_box(vis, ref_boxes, (0, 1, 0), ref_labels, ref_scores)
 
-    vis.run()
-    vis.destroy_window()
+    # Reset the view to fit the new geometries
+    vis.reset_view_point(True)
+
+    vis.update_renderer()
+    vis.poll_events()
+    # vis.run()
 
 
 def translate_boxes_to_open3d_instance(gt_boxes):

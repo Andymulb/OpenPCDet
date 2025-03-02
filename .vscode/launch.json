@@ -1,0 +1,29 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Run demo.py",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "tools/demo.py",
+            "args": [
+                "--cfg_file", 
+                "tools/cfgs/kitti_models/diffSLAM.yaml",
+                "--ckpt",
+                "checkpoints/pointpillar_7728.pth",
+                "--data_path",
+                "/home/avsjetsonagx1/diffSLAM/data/KITTI_Odometry/original/sequences/00/velodyne", // "/home/avsjetsonagx1/diffSLAM/data/own_data/LiDAR/bin/",
+                // "--vis",
+                "--spatial_features_output_dir",
+                "/home/avsjetsonagx1/diffSLAM/data/KITTI_Odometry/original/sequences/00/spatial_features",
+                "--max_spatial_features",
+                "3000",
+            ],
+            "env": {
+                "DISPLAY": ":0"
+            },
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}"
+        }
+    ]
+}
